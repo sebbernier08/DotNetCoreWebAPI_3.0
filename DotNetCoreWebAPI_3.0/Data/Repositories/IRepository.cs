@@ -15,6 +15,5 @@ namespace DotNetCoreWebAPI_3._0.Data.Repositories
         TEntity GetById(long id);
         IEnumerable<TEntity> Filter();
         IEnumerable<TEntity> Filter(Func<TEntity, bool> predicate);
-        void SaveChanges();
     }
 }

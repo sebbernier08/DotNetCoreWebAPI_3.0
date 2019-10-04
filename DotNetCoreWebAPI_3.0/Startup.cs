@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreWebAPI_3._0.Data;
 using DotNetCoreWebAPI_3._0.Data.Repositories;
 using DotNetCoreWebAPI_3._0.Data.Repositories.Impl;
+using DotNetCoreWebAPI_3._0.Mappers;
+using DotNetCoreWebAPI_3._0.Services;
+using DotNetCoreWebAPI_3._0.Services.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +34,24 @@ namespace DotNetCoreWebAPI_3._0
         {
             services.AddControllers();
 
+            // Add All Database Context
             services.AddDbContext<ApiDbContext>(opt => opt.UseInMemoryDatabase("ApiDatabase"));
 
+            // Add Repositories DI
             services.AddTransient<IBeerRepository, BeerRepository>();
+
+            // Add Services DI
+            services.AddTransient<IBeerService, BeerService>();
+
+            // Configuration for AutoMapper
+            // ==========================================================
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MapperProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            // ==========================================================
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
