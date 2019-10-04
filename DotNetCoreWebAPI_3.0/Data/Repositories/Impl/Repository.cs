@@ -15,11 +15,13 @@ namespace DotNetCoreWebAPI_3._0.Data.Repositories.Impl
         public void Create(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(long id)
@@ -28,6 +30,7 @@ namespace DotNetCoreWebAPI_3._0.Data.Repositories.Impl
             if (entityToDelete != null)
             {
                 _context.Set<TEntity>().Remove(entityToDelete);
+                _context.SaveChanges();
             }
         }
 
@@ -35,6 +38,7 @@ namespace DotNetCoreWebAPI_3._0.Data.Repositories.Impl
         {
             var editedEntity = _context.Set<TEntity>().FirstOrDefault(e => e.Id == entity.Id);
             editedEntity = entity;
+            _context.SaveChanges();
         }
 
         public TEntity GetById(long id)
@@ -51,7 +55,5 @@ namespace DotNetCoreWebAPI_3._0.Data.Repositories.Impl
         {
             return _context.Set<TEntity>().Where(predicate);
         }
-
-        public void SaveChanges() => _context.SaveChanges();
     }
 }
