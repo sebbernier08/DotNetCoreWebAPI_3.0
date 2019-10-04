@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCoreWebAPI_3._0.Data;
+using DotNetCoreWebAPI_3._0.Data.Repositories;
+using DotNetCoreWebAPI_3._0.Data.Repositories.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +29,10 @@ namespace DotNetCoreWebAPI_3._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<ApiDbContext>(opt => opt.UseInMemoryDatabase("ApiDatabase"));
+
+            services.AddTransient<IBeerRepository, BeerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
