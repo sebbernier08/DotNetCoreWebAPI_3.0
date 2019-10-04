@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCoreWebAPI_3._0.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +15,17 @@ namespace DotNetCoreWebAPI_3._0
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApiDbContext>();
+
+                AddTestData(context);
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,5 +34,26 @@ namespace DotNetCoreWebAPI_3._0
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static void AddTestData(ApiDbContext context)
+        {
+            context.Beers.AddRange(
+                new Data.Models.Beer()
+                {
+                    Id = 1,
+                    Name = "Nuit Blanche",
+                    Type = Data.Models.BeerType.API
+                },
+                new Data.Models.Beer()
+                {
+                    Id = 2,
+                    Name = "Chipie",
+                    Type = Data.Models.BeerType.RED
+                }
+            );
+
+            context.SaveChanges();
+        }
     }
 }
+
