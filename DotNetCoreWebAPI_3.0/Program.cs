@@ -52,6 +52,18 @@ namespace DotNetCoreWebAPI_3._0
                 }
             );
 
+            context.Users.Add(
+               new Data.Models.User()
+               {
+                   Id = 1,
+                   FirstName = "Sébastien",
+                   LastName = "Bernier",
+                   Email = "sebbernier@effenti.ca",
+                   Password = "asd",
+                   Role = Data.Models.Role.ADMIN
+               }
+           );
+
             context.SaveChanges();
         }
     }
