@@ -1,11 +1,13 @@
 ﻿using DotNetCoreWebAPI_3._0.DTO;
 using DotNetCoreWebAPI_3._0.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetCoreWebAPI_3._0.Controllers.V1
 {
     [Route("api/v1/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
     public class BeerController : ControllerBase
     {
         private readonly IBeerService _beerService;
