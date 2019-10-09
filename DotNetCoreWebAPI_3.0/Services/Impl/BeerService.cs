@@ -3,6 +3,7 @@ using DotNetCoreWebAPI_3._0.Data;
 using DotNetCoreWebAPI_3._0.Data.Models;
 using DotNetCoreWebAPI_3._0.Data.Repositories;
 using DotNetCoreWebAPI_3._0.DTO;
+using DotNetCoreWebAPI_3._0.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,11 @@ namespace DotNetCoreWebAPI_3._0.Services.Impl
             {
                 var beerModel = _beerRepository.GetById(beerDTO.Id.Value);
                 if (beerModel == null)
-                    throw new Exception();
-
+                {
+                    //_context.Database.RollbackTransaction();
+                    throw new NotFoundException("L'identifiant de la bière n'est pas valide!");
+                }
+                    
                 beerModel.Name = beerDTO.Name;
                 beerModel.Type = beerDTO.Type;
 
@@ -68,7 +72,7 @@ namespace DotNetCoreWebAPI_3._0.Services.Impl
         public void Delete(long id)
         {
             if (_beerRepository.GetById(id) == null)
-                throw new Exception();
+                throw new NotFoundException("L'identifiant de la bière n'est pas valide!");
 
             _beerRepository.Delete(id);
         }
