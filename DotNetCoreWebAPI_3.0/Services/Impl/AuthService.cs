@@ -1,5 +1,6 @@
 ﻿using DotNetCoreWebAPI_3._0.Data.Models;
 using DotNetCoreWebAPI_3._0.Data.Repositories;
+using DotNetCoreWebAPI_3._0.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -26,8 +27,8 @@ namespace DotNetCoreWebAPI_3._0.Services.Impl
         {
             var user = _userRepository.Filter(x => x.Email == email && x.Password == password).SingleOrDefault();
 
-            //if (user == null)
-            //    throw new NotFoundException("L'utilisateur n'existe pas!");
+            if (user == null)
+                return null;
 
             return GenerateJwtToken(user);
         }

@@ -3,6 +3,7 @@ using DotNetCoreWebAPI_3._0.Data;
 using DotNetCoreWebAPI_3._0.Data.Repositories;
 using DotNetCoreWebAPI_3._0.Data.Repositories.Impl;
 using DotNetCoreWebAPI_3._0.Mappers;
+using DotNetCoreWebAPI_3._0.Middlewares;
 using DotNetCoreWebAPI_3._0.Services;
 using DotNetCoreWebAPI_3._0.Services.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -103,6 +104,8 @@ namespace DotNetCoreWebAPI_3._0
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
             app.UseEndpoints(endpoints =>
             {
